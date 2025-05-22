@@ -3,12 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Uwon Basic 词汇复习计划 </title>
+  <title>Uwon Basic 词汇复习计划</title>
   <style>
     html, body {
       margin: 0;
       padding: 0;
       background: linear-gradient(to bottom right, #5cb1a6, #6dc1b5);
+      background-attachment: fixed;
       font-family: 'Segoe UI', sans-serif;
       min-height: 100vh;
     }
@@ -73,7 +74,7 @@
       text-decoration: underline;
     }
 
-    @media (max-width: 768px) {
+    @media (max-width: 480px) {
       table, thead, tbody, th, td, tr {
         display: block;
       }
@@ -115,7 +116,7 @@
 </head>
 <body>
   <div class="container">
-    <h2> Uwon Basic 词汇复习计划</h2>
+    <h2> UWON Basic 词汇复习计划</h2>
     <table>
       <thead>
         <tr>
@@ -131,7 +132,7 @@
   <script>
     const totalLessons = 31;
     const totalDays = 60;
-    const reviewOffsets = [1, 2, 6, 14, 29];
+    const reviewOffsets = [1, 2, 6, 14, 29]; // 第1、3、7、15、30天复习
 
     const tbody = document.getElementById('plan-body');
 
