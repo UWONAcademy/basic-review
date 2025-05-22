@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Uwon Basic 词汇复习计划</title>
+  <title>词汇复习计划</title>
   <style>
     html, body {
       margin: 0;
@@ -14,136 +14,105 @@
       min-height: 100vh;
     }
 
-    .container {
-      max-width: 900px;
-      margin: 40px auto;
-      background: white;
-      border-radius: 16px;
-      padding: 30px;
-      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+    .page-title {
+      text-align: center;
+      font-size: 26px;
+      color: #ffffff;
+      margin-top: 30px;
+      margin-bottom: 10px;
+      text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
     }
 
-    h2 {
-      text-align: center;
-      color: #2c3e50;
+    .container {
+      max-width: 800px;
+      margin: 20px auto;
+      padding: 20px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+      padding: 20px;
       margin-bottom: 20px;
     }
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 15px;
-      table-layout: fixed;
+    .day-title {
+      font-size: 18px;
+      font-weight: bold;
+      color: #2c3e50;
+      margin-bottom: 10px;
     }
 
-    th, td {
-      border: 1px solid #d1d5db;
-      padding: 10px 12px;
-      text-align: left;
-      vertical-align: top;
+    .label {
+      font-weight: bold;
+      color: #555;
+      margin-top: 6px;
     }
 
-    th:nth-child(1),
-    td:nth-child(1) {
-      width: 100px;
-      white-space: nowrap;
-    }
-
-    th:nth-child(2),
-    td:nth-child(2) {
-      width: 160px;
-      white-space: nowrap;
-    }
-
-    th {
-      background-color: #e0f2f1;
-      color: #004d40;
-    }
-
-    tr:nth-child(even) {
-      background-color: #f9f9f9;
-    }
-
-    a.lesson-link {
+    .lesson-link {
       color: #1976d2;
       font-weight: bold;
       text-decoration: none;
     }
 
-    a.lesson-link:hover {
+    .lesson-link:hover {
       text-decoration: underline;
     }
 
     @media (max-width: 480px) {
-      table, thead, tbody, th, td, tr {
-        display: block;
+      .card {
+        padding: 16px;
       }
-
-      thead {
-        display: none;
+      .day-title {
+        font-size: 16px;
       }
-
-      tr {
-        margin-bottom: 15px;
-        border-radius: 8px;
-        overflow: hidden;
-        box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-        background: #fff;
-      }
-
-      td {
-        border: none;
-        border-bottom: 1px solid #eee;
-        padding: 12px 16px;
-        position: relative;
-        white-space: normal !important;
-      }
-
-      td::before {
-        content: attr(data-label);
-        position: absolute;
-        top: 12px;
-        left: 16px;
-        font-weight: bold;
-        color: #888;
-      }
-
-      td:nth-of-type(1)::before { content: "第几天"; }
-      td:nth-of-type(2)::before { content: "新课学习"; }
-      td:nth-of-type(3)::before { content: "复习内容"; }
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h2> UWON Basic 词汇复习计划</h2>
-    <table>
-      <thead>
-        <tr>
-          <th>第几天</th>
-          <th>新课学习</th>
-          <th>复习内容</th>
-        </tr>
-      </thead>
-      <tbody id="plan-body"></tbody>
-    </table>
-  </div>
+  <h1 class="page-title">UWON Basic 词汇复习计划</h1>
+
+  <div class="container" id="plan-container"></div>
 
   <script>
     const totalLessons = 31;
     const totalDays = 60;
-    const reviewOffsets = [1, 2, 6, 14, 29]; // 第1、3、7、15、30天复习
-
-    const tbody = document.getElementById('plan-body');
+    const reviewOffsets = [1, 2, 6, 14, 29];
+    const container = document.getElementById('plan-container');
 
     for (let day = 1; day <= totalDays; day++) {
-      let newLessonLink = '—';
+      const card = document.createElement('div');
+      card.className = 'card';
+
+      const dayTitle = document.createElement('div');
+      dayTitle.className = 'day-title';
+      dayTitle.textContent = `第 ${day} 天`;
+      card.appendChild(dayTitle);
+
+      // 新课学习
+      const lessonLabel = document.createElement('div');
+      lessonLabel.className = 'label';
+      lessonLabel.textContent = '新课学习：';
+      card.appendChild(lessonLabel);
+
+      const lessonContent = document.createElement('div');
       if (day <= totalLessons) {
         const lessonNum = day.toString().padStart(2, '0');
         const url = `https://uwonacademy.github.io/lesson-${lessonNum}/`;
-        newLessonLink = `<a class="lesson-link" href="${url}" target="_blank">Lesson ${lessonNum}</a>`;
+        lessonContent.innerHTML = `<a class="lesson-link" href="${url}" target="_blank">Lesson ${lessonNum}</a>`;
+      } else {
+        lessonContent.textContent = '—';
       }
+      card.appendChild(lessonContent);
 
+      // 复习内容
+      const reviewLabel = document.createElement('div');
+      reviewLabel.className = 'label';
+      reviewLabel.textContent = '复习内容：';
+      card.appendChild(reviewLabel);
+
+      const reviewContent = document.createElement('div');
       let reviews = [];
       for (let i = 1; i <= totalLessons; i++) {
         for (let r = 0; r < reviewOffsets.length; r++) {
@@ -154,16 +123,10 @@
           }
         }
       }
+      reviewContent.innerHTML = reviews.length ? reviews.join('， ') : '—';
+      card.appendChild(reviewContent);
 
-      const reviewText = reviews.length ? reviews.join('， ') : '—';
-
-      const row = document.createElement('tr');
-      row.innerHTML = `
-        <td data-label="第几天">第 ${day} 天</td>
-        <td data-label="新课学习">${newLessonLink}</td>
-        <td data-label="复习内容">${reviewText}</td>
-      `;
-      tbody.appendChild(row);
+      container.appendChild(card);
     }
   </script>
 </body>
